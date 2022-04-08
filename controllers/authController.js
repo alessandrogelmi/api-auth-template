@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { userValidation } = require("../utils/validation");
 
@@ -15,6 +17,10 @@ exports.userSignUp = async (req, res, next) => {
   if (emailExists) {
     return res.status(500).send({ error: "Email already exists" });
   }
+
+  //Hash password
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
   const user = new User({
     _id: mongoose.Types.ObjectId(),
