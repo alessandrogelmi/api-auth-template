@@ -7,8 +7,7 @@ const { userValidation } = require("../utils/validation");
 exports.userSignUp = async (req, res, next) => {
   const { error } = userValidation(req.body);
   if (error) {
-    console.log(error);
-    return res.status(400).send(error.details[0].message);
+    return res.status(400).send({ error: error.message });
   }
 
   //Check is email already exists
