@@ -3,10 +3,11 @@ const User = require("../models/User");
 const { userValidation } = require("../utils/validation");
 
 // @desc    User sign up
-// @route   POST /auth/register
+// @route   POST /auth/signup
 exports.userSignUp = async (req, res, next) => {
   const { error } = userValidation(req.body);
   if (error) {
+    console.log(error);
     return res.status(400).send(error.details[0].message);
   }
 

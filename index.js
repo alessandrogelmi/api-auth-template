@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const indexRoutes = require("./routes/index");
+const authRoutes = require("./routes/auth");
 const colors = require("colors");
 const connectDB = require("./config/databaseConnection");
 
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/", indexRoutes);
+app.use("/auth", authRoutes);
 
 app.listen(
   PORT,
