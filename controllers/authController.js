@@ -74,7 +74,7 @@ exports.userSignIn = async (req, res, next) => {
   res.send({
     token,
     token_expires_in: process.env.TOKEN_EXPIRES_IN,
-    refreshToken,
-    refreshToken_expires_in: process.env.REFRESH_EXPIRES_IN,
+    refresh_token: refreshToken,
+    refresh_token_expires_in: process.env.REFRESH_EXPIRES_IN,
   });
 };
