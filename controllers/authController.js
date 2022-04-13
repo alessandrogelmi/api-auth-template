@@ -78,3 +78,40 @@ exports.userSignIn = async (req, res, next) => {
     refresh_token_expires_in: process.env.REFRESH_EXPIRES_IN,
   });
 };
+
+// @desc    User refresh token
+// @route   POST /auth/refresh
+exports.refreshToken = async (req, res, next) => {
+  const refresh = req.body.refresh_token;
+  if (!refresh) {
+    return res.status(400).send({ error: "Refresh token does not exists" });
+  }
+
+  const checkRefresh = jwt.verify(refresh, process.env.REFRESH_TOKEN_KEY);
+  if (!checkRefresh) {
+    return res.status(400).send({ error: "Refresh token is invalid" });
+  }
+
+  const token = jwt.sign(
+    { _id: checkRefresh._id, email: checkRefresh.email },
+    process.env.TOKEN_KEY,
+    {
+      expiresIn: process.env.TOKEN_EXPIRES_IN,
+    }
+  );
+
+  const refreshToken = jwt.sign(
+    { _id: checkRefresh._id, email: checkRefresh.email },
+    process.env.REFRESH_TOKEN_KEY,
+    {
+      expiresIn: process.env.REFRESH_EXPIRES_IN,
+    }
+  );
+
+  res.send({
+    token,
+    token_expires_in: process.env.TOKEN_EXPIRES_IN,
+    refresh_token: refreshToken,
+    refresh_token_expires_in: process.env.REFRESH_EXPIRES_IN,
+  });
+};
