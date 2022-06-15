@@ -13,8 +13,6 @@ const app = express();
 
 connectDB();
 
-app.get("/", (req, res) => res.send(routes));
-
 app.use(express.json());
 app.use(cors());
 
