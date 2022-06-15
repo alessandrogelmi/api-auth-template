@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { userValidation } = require("../utils/validation");
+const tokenExpiresIn = 300;
+const refreshTokenExpires = 86400;
 
 // @desc    User sign up
 // @route   POST /auth/signup
@@ -59,7 +61,7 @@ exports.userSignIn = async (req, res, next) => {
     { _id: user._id, email: user.email },
     process.env.TOKEN_KEY,
     {
-      expiresIn: process.env.TOKEN_EXPIRES_IN,
+      expiresIn: tokenExpiresIn,
     }
   );
 
@@ -67,15 +69,15 @@ exports.userSignIn = async (req, res, next) => {
     { _id: user._id, email: user.email },
     process.env.REFRESH_TOKEN_KEY,
     {
-      expiresIn: process.env.REFRESH_EXPIRES_IN,
+      expiresIn: refreshTokenExpires,
     }
   );
 
   res.send({
     token,
-    token_expires_in: process.env.TOKEN_EXPIRES_IN,
+    token_expires_in: tokenExpiresIn,
     refresh_token: refreshToken,
-    refresh_token_expires_in: process.env.REFRESH_EXPIRES_IN,
+    refresh_token_expires_in: refreshTokenExpires,
   });
 };
 
