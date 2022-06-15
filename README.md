@@ -18,3 +18,6 @@ yarn
 ```
 Then, rename the `env.template` file into `.env` and set your custom variables  
 > **NB**. The generated `.env` file is not tracket by git - and **must remain not tracked!**
+
+## Github Template
+You can also use this repo as a template by clicking `Use this template` button
