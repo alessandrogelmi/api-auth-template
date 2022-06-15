@@ -8,6 +8,8 @@ Routes available:
 - Refresh Token: `{local_url}/auth/refresh`
 - Homepage with authentication check middleware: `{local_url}/`
 
+[API Documentation](https://documenter.getpostman.com/view/13608883/UzBiQook)
+
 ## Local Setup
 
 Clone and install dependencies: 
