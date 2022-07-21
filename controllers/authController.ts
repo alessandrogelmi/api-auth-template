@@ -1,14 +1,19 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import User from "../models/User";
 const { userValidation } = require("../utils/validation");
 const tokenExpiresIn = 300;
 const refreshTokenExpires = 86400;
 
 // @desc    User sign up
 // @route   POST /auth/signup
-exports.userSignUp = async (req, res, next) => {
+exports.userSignUp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { error } = userValidation(req.body);
   if (error) {
     return res.status(400).send({ error: error.message });
@@ -25,7 +30,7 @@ exports.userSignUp = async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
   const user = new User({
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     email: req.body.email,
     password: hashedPassword,
   });
@@ -40,7 +45,11 @@ exports.userSignUp = async (req, res, next) => {
 
 //@ desc    User sign in
 //@ route   POST /auth/signin
-exports.userSignIn = async (req, res, next) => {
+exports.userSignIn = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { error } = userValidation(req.body);
 
   if (error) {
@@ -83,7 +92,11 @@ exports.userSignIn = async (req, res, next) => {
 
 // @desc    User refresh token
 // @route   POST /auth/refresh
-exports.refreshToken = async (req, res, next) => {
+exports.refreshToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const refresh = req.body.refresh_token;
   if (!refresh) {
     return res.status(400).send({ error: "Refresh token does not exists" });
