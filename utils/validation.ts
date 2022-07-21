@@ -1,7 +1,7 @@
 //USER VALIDATION
 const Joi = require("joi");
 
-const userValidation = (data) => {
+const userValidation = (data: any) => {
   const schema = Joi.object({
     email: Joi.string().email().required().messages({
       "string.email": "Email must be a valid email",
@@ -15,4 +15,4 @@ const userValidation = (data) => {
   return schema.validate(data);
 };
 
-module.exports.userValidation = userValidation;
+export default userValidation;

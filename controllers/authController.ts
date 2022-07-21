@@ -1,19 +1,16 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
-const { userValidation } = require("../utils/validation");
+import userValidation from "../utils/validation";
+import { TokenInterface } from "../utils/types";
 const tokenExpiresIn = 300;
 const refreshTokenExpires = 86400;
 
 // @desc    User sign up
 // @route   POST /auth/signup
-exports.userSignUp = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+exports.userSignUp = async (req: Request, res: Response) => {
   const { error } = userValidation(req.body);
   if (error) {
     return res.status(400).send({ error: error.message });
@@ -45,11 +42,7 @@ exports.userSignUp = async (
 
 //@ desc    User sign in
 //@ route   POST /auth/signin
-exports.userSignIn = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+exports.userSignIn = async (req: Request, res: Response) => {
   const { error } = userValidation(req.body);
 
   if (error) {
@@ -92,17 +85,17 @@ exports.userSignIn = async (
 
 // @desc    User refresh token
 // @route   POST /auth/refresh
-exports.refreshToken = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+exports.refreshToken = async (req: Request, res: Response) => {
   const refresh = req.body.refresh_token;
   if (!refresh) {
     return res.status(400).send({ error: "Refresh token does not exists" });
   }
 
-  const checkRefresh = jwt.verify(refresh, process.env.REFRESH_TOKEN_KEY);
+  const checkRefresh = jwt.verify(
+    refresh,
+    process.env.REFRESH_TOKEN_KEY
+  ) as TokenInterface;
+
   if (!checkRefresh) {
     return res.status(400).send({ error: "Refresh token is invalid" });
   }

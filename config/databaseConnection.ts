@@ -6,10 +6,10 @@ const connectDB = async () => {
       useNewUrlParser: true,
     });
     console.log(`MongoDB Connected: ${conn.connection.host}`.cyan);
-  } catch (err) {
+  } catch (err: any) {
     console.error(`${err.message}`);
     process.exit(1);
   }
 };
 
-module.exports = connectDB;
+export default connectDB;
