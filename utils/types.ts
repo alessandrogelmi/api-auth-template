@@ -1,7 +1,7 @@
-import { Schema } from "mongoose";
+import mongoose = require("mongoose");
 
-export interface IUser {
-  _id: Schema.Types.ObjectId;
+export interface IUser extends mongoose.Document {
+  _id: mongoose.Schema.Types.ObjectId;
   email: string;
   password: string;
 }

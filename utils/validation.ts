@@ -15,4 +15,4 @@ const userValidation = (data: any) => {
   return schema.validate(data);
 };
 
-export default userValidation;
+module.exports.userValidation = userValidation;

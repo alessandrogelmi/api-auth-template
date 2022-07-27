@@ -1,8 +1,13 @@
-import { Schema, model } from "mongoose";
-import { IUser } from "../utils/types";
+import mongoose = require("mongoose");
 
-const userSchema = new Schema<IUser>({
-  _id: Schema.Types.ObjectId,
+interface IUser extends mongoose.Document {
+  _id: mongoose.Schema.Types.ObjectId;
+  email: string;
+  password: string;
+}
+
+const userSchema = new mongoose.Schema<IUser>({
+  _id: mongoose.Schema.Types.ObjectId,
   email: {
     type: String,
     required: true,
@@ -10,6 +15,6 @@ const userSchema = new Schema<IUser>({
   password: { type: String, required: true },
 });
 
-const User = model<IUser>("User", userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;

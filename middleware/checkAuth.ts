@@ -1,7 +1,11 @@
-import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
+const jwt = require("jsonwebtoken");
+import express = require("express");
 
-const checkAuth = function (req: Request, res: Response, next: NextFunction) {
+const checkAuth = function (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) {
   const token = req.header("authorization")!.replace("Bearer ", "");
   if (!token) {
     return res.status(401).send({ error: "Access denied" });

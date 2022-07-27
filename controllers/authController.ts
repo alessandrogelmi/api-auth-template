@@ -1,16 +1,22 @@
-import { Request, Response } from "express";
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import User from "../models/User";
-import userValidation from "../utils/validation";
-import { TokenInterface } from "../utils/types";
+import mongoose = require("mongoose");
+import express = require("express");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+const userValidation = require("../utils/validation");
 const tokenExpiresIn = 300;
 const refreshTokenExpires = 86400;
+interface TokenInterface {
+  _id: string;
+  email: string;
+}
 
 // @desc    User sign up
 // @route   POST /auth/signup
-exports.userSignUp = async (req: Request, res: Response) => {
+export const userSignUp = async (
+  req: express.Request,
+  res: express.Response
+) => {
   const { error } = userValidation(req.body);
   if (error) {
     return res.status(400).send({ error: error.message });
@@ -42,7 +48,10 @@ exports.userSignUp = async (req: Request, res: Response) => {
 
 //@ desc    User sign in
 //@ route   POST /auth/signin
-exports.userSignIn = async (req: Request, res: Response) => {
+export const userSignIn = async (
+  req: express.Request,
+  res: express.Response
+) => {
   const { error } = userValidation(req.body);
 
   if (error) {
@@ -85,7 +94,10 @@ exports.userSignIn = async (req: Request, res: Response) => {
 
 // @desc    User refresh token
 // @route   POST /auth/refresh
-exports.refreshToken = async (req: Request, res: Response) => {
+export const refreshToken = async (
+  req: express.Request,
+  res: express.Response
+) => {
   const refresh = req.body.refresh_token;
   if (!refresh) {
     return res.status(400).send({ error: "Refresh token does not exists" });

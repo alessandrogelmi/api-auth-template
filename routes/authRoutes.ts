@@ -1,11 +1,9 @@
-import express from "express";
-import {
+const router = require("express").Router();
+const {
   userSignUp,
   userSignIn,
   refreshToken,
-} from "../controllers/authController";
-
-const router = express.Router();
+} = require("../controllers/authController");
 
 router.post("/signup", userSignUp);
 router.post("/signin", userSignIn);
