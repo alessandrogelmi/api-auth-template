@@ -1,7 +1,7 @@
-const router = require("express").Router();
+const indexRouter = require("express").Router();
 const checkAuth = require("../middleware/checkAuth");
-const helloWorld = require("../controllers/hello");
+const { helloWorld } = require("../controllers/hello");
 
-router.get("/", checkAuth, helloWorld);
+indexRouter.get("/", checkAuth, helloWorld);
 
-export default router;
+module.exports = indexRouter;

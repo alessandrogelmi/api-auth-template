@@ -13,10 +13,7 @@ interface TokenInterface {
 
 // @desc    User sign up
 // @route   POST /auth/signup
-export const userSignUp = async (
-  req: express.Request,
-  res: express.Response
-) => {
+exports.userSignUp = async (req: express.Request, res: express.Response) => {
   const { error } = userValidation(req.body);
   if (error) {
     return res.status(400).send({ error: error.message });
@@ -48,10 +45,7 @@ export const userSignUp = async (
 
 //@ desc    User sign in
 //@ route   POST /auth/signin
-export const userSignIn = async (
-  req: express.Request,
-  res: express.Response
-) => {
+exports.userSignIn = async (req: express.Request, res: express.Response) => {
   const { error } = userValidation(req.body);
 
   if (error) {
@@ -94,10 +88,7 @@ export const userSignIn = async (
 
 // @desc    User refresh token
 // @route   POST /auth/refresh
-export const refreshToken = async (
-  req: express.Request,
-  res: express.Response
-) => {
+exports.refreshToken = async (req: express.Request, res: express.Response) => {
   const refresh = req.body.refresh_token;
   if (!refresh) {
     return res.status(400).send({ error: "Refresh token does not exists" });

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 import express = require("express");
 
-const checkAuth = function (
+module.exports = function (
   req: express.Request,
   res: express.Response,
   next: express.NextFunction
@@ -18,5 +18,3 @@ const checkAuth = function (
     res.status(400).send({ error: "Invalid token" });
   }
 };
-
-export default checkAuth;

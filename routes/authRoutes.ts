@@ -1,12 +1,12 @@
-const router = require("express").Router();
+const authRouter = require("express").Router();
 const {
   userSignUp,
   userSignIn,
   refreshToken,
 } = require("../controllers/authController");
 
-router.post("/signup", userSignUp);
-router.post("/signin", userSignIn);
-router.post("/refresh", refreshToken);
+authRouter.post("/signup", userSignUp);
+authRouter.post("/signin", userSignIn);
+authRouter.post("/refresh", refreshToken);
 
-export default router;
+module.exports = authRouter;
