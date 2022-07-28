@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 const { userValidation } = require("../utils/validation");
 const tokenExpiresIn = 300;
-const refreshTokenExpires = 86400;
+const refreshTokenExpiresIn = 86400;
+
 interface TokenInterface {
   _id: string;
   email: string;
@@ -74,7 +75,7 @@ exports.userSignIn = async (req: express.Request, res: express.Response) => {
     { _id: user._id, email: user.email },
     process.env.REFRESH_TOKEN_KEY,
     {
-      expiresIn: refreshTokenExpires,
+      expiresIn: refreshTokenExpiresIn,
     }
   );
 
@@ -82,7 +83,7 @@ exports.userSignIn = async (req: express.Request, res: express.Response) => {
     token,
     token_expires_in: tokenExpiresIn,
     refresh_token: refreshToken,
-    refresh_token_expires_in: refreshTokenExpires,
+    refresh_token_expires_in: refreshTokenExpiresIn,
   });
 };
 
@@ -107,7 +108,7 @@ exports.refreshToken = async (req: express.Request, res: express.Response) => {
     { _id: checkRefresh._id, email: checkRefresh.email },
     process.env.TOKEN_KEY,
     {
-      expiresIn: process.env.TOKEN_EXPIRES_IN,
+      expiresIn: tokenExpiresIn,
     }
   );
 
@@ -115,14 +116,14 @@ exports.refreshToken = async (req: express.Request, res: express.Response) => {
     { _id: checkRefresh._id, email: checkRefresh.email },
     process.env.REFRESH_TOKEN_KEY,
     {
-      expiresIn: process.env.REFRESH_EXPIRES_IN,
+      expiresIn: refreshTokenExpiresIn,
     }
   );
 
   res.send({
     token,
-    token_expires_in: process.env.TOKEN_EXPIRES_IN,
+    token_expires_in: tokenExpiresIn,
     refresh_token: refreshToken,
-    refresh_token_expires_in: process.env.REFRESH_EXPIRES_IN,
+    refresh_token_expires_in: refreshTokenExpiresIn,
   });
 };
