@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const databaseConnection = require("./config/databaseConnection");
 const authRoutes = require("./routes/authRoutes");
 const indexRoutes = require("./routes/indexRoutes");
-const colors = require("colors");
+const colors = require("colors/safe");
 
 dotenv.config({ path: "./config/.env" });
 
@@ -20,5 +20,9 @@ app.use("/", indexRoutes);
 app.use("/auth", authRoutes);
 
 app.listen(PORT, () =>
-  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+  console.log(
+    colors.green(
+      `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
+    )
+  )
 );
