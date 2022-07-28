@@ -1,14 +1,20 @@
-const mongoose = require("mongoose");
+import mongoose = require("mongoose");
+import express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../models/user.model");
 const { userValidation } = require("../utils/validation");
 const tokenExpiresIn = 300;
-const refreshTokenExpires = 86400;
+const refreshTokenExpiresIn = 86400;
+
+interface TokenInterface {
+  _id: string;
+  email: string;
+}
 
 // @desc    User sign up
 // @route   POST /auth/signup
-exports.userSignUp = async (req, res, next) => {
+exports.userSignUp = async (req: express.Request, res: express.Response) => {
   const { error } = userValidation(req.body);
   if (error) {
     return res.status(400).send({ error: error.message });
@@ -25,7 +31,7 @@ exports.userSignUp = async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
   const user = new User({
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     email: req.body.email,
     password: hashedPassword,
   });
@@ -40,7 +46,7 @@ exports.userSignUp = async (req, res, next) => {
 
 //@ desc    User sign in
 //@ route   POST /auth/signin
-exports.userSignIn = async (req, res, next) => {
+exports.userSignIn = async (req: express.Request, res: express.Response) => {
   const { error } = userValidation(req.body);
 
   if (error) {
@@ -69,7 +75,7 @@ exports.userSignIn = async (req, res, next) => {
     { _id: user._id, email: user.email },
     process.env.REFRESH_TOKEN_KEY,
     {
-      expiresIn: refreshTokenExpires,
+      expiresIn: refreshTokenExpiresIn,
     }
   );
 
@@ -77,19 +83,23 @@ exports.userSignIn = async (req, res, next) => {
     token,
     token_expires_in: tokenExpiresIn,
     refresh_token: refreshToken,
-    refresh_token_expires_in: refreshTokenExpires,
+    refresh_token_expires_in: refreshTokenExpiresIn,
   });
 };
 
 // @desc    User refresh token
 // @route   POST /auth/refresh
-exports.refreshToken = async (req, res, next) => {
+exports.refreshToken = async (req: express.Request, res: express.Response) => {
   const refresh = req.body.refresh_token;
   if (!refresh) {
     return res.status(400).send({ error: "Refresh token does not exists" });
   }
 
-  const checkRefresh = jwt.verify(refresh, process.env.REFRESH_TOKEN_KEY);
+  const checkRefresh = jwt.verify(
+    refresh,
+    process.env.REFRESH_TOKEN_KEY
+  ) as TokenInterface;
+
   if (!checkRefresh) {
     return res.status(400).send({ error: "Refresh token is invalid" });
   }
@@ -98,7 +108,7 @@ exports.refreshToken = async (req, res, next) => {
     { _id: checkRefresh._id, email: checkRefresh.email },
     process.env.TOKEN_KEY,
     {
-      expiresIn: process.env.TOKEN_EXPIRES_IN,
+      expiresIn: tokenExpiresIn,
     }
   );
 
@@ -106,14 +116,14 @@ exports.refreshToken = async (req, res, next) => {
     { _id: checkRefresh._id, email: checkRefresh.email },
     process.env.REFRESH_TOKEN_KEY,
     {
-      expiresIn: process.env.REFRESH_EXPIRES_IN,
+      expiresIn: refreshTokenExpiresIn,
     }
   );
 
   res.send({
     token,
-    token_expires_in: process.env.TOKEN_EXPIRES_IN,
+    token_expires_in: tokenExpiresIn,
     refresh_token: refreshToken,
-    refresh_token_expires_in: process.env.REFRESH_EXPIRES_IN,
+    refresh_token_expires_in: refreshTokenExpiresIn,
   });
 };
