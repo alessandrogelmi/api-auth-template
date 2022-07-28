@@ -3,7 +3,7 @@ const {
   userSignUp,
   userSignIn,
   refreshToken,
-} = require("../controllers/authController");
+} = require("../controllers/auth.controller");
 
 authRouter.post("/signup", userSignUp);
 authRouter.post("/signin", userSignIn);

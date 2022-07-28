@@ -2,8 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const databaseConnection = require("./config/databaseConnection");
-const authRoutes = require("./routes/authRoutes");
-const indexRoutes = require("./routes/indexRoutes");
+const authRoutes = require("./routes/auth.routes");
+const indexRoutes = require("./routes/index.routes");
 const colors = require("colors/safe");
 
 dotenv.config({ path: "./config/.env" });
