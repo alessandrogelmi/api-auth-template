@@ -3,7 +3,7 @@ import express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
-const userValidation = require("../utils/validation");
+const { userValidation } = require("../utils/validation");
 const tokenExpiresIn = 300;
 const refreshTokenExpires = 86400;
 interface TokenInterface {
