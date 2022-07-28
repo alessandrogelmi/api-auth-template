@@ -1,6 +1,6 @@
 # Auth API Template
 
-A simple API Auth Template for Node.js and MongoDB projects
+A simple API Auth Template for Node.ts and MongoDB projects
 
 Routes available:
 - Sign Up: `{local_url}/auth/signup`
